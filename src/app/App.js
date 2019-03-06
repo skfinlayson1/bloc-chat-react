@@ -24,9 +24,9 @@ class App extends Component {
           <h1 className='welcome-text'>Block Chat</h1>
         </header>
         <section className='list-of-rooms'>
-          <RoomList
-			firebase={firebase}
-			/>
+        	<RoomList
+				firebase={firebase}
+			 />
         </section>
       </div>
     );

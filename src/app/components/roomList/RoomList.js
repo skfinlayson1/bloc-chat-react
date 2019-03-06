@@ -5,7 +5,8 @@ class RoomList extends React.Component {
         super(props)
 
         this.state = {
-            rooms: []
+            rooms: [],
+            textValue: ''
         }
 
         this.roomsRef = this.props.firebase.database().ref('rooms');
@@ -13,21 +14,49 @@ class RoomList extends React.Component {
 
     componentDidMount() {
         this.roomsRef.on('child_added', snapshot => {
-            const room = snapshot.val();
-            room.key = snapshot.key;
+            const room = {value: snapshot.val(), key: snapshot.key};
             this.setState({ rooms: this.state.rooms.concat( room ) })
         })
     }
 
+    textChange = (e) => {
+        const newText = e.target.value;
+        this.setState( prevState => {
+            return { textValue: prevState.textValue = newText }})
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.roomsRef.push({name: this.state.textValue});
+        this.setState( prevState => {
+            return {
+                textValue: prevState.textValue = ''
+            }
+        })
+    }
+
     render() {
-        console.log(this.state.rooms);
         return (
             <section className='all-rooms'>
                 {this.state.rooms.map(room => {
                     return (
-                        <div className='room' key={room.key}>{room.name}</div>
+                        <div className='room' key={room.key}>{room.value.name}</div>
                     )
                 })}
+
+                <form className='add-chat-room' onSubmit={(e) => this.handleSubmit(e)}>
+                    <input
+                        type='text'
+                        value={this.state.textValue}
+                        onChange={this.textChange}
+                        placeholder='Add Chat Room Here'    
+                     />
+
+                     <input
+                        type='submit'
+                        value='Add Chat Room'
+                     />
+                </form>
             </section>
         )
     }
