@@ -1,0 +1,14 @@
+
+.welcome-text {
+    margin: 0;
+    width: 100%;
+    padding: 50px 0px;
+    background-color: grey;
+}
+
+.list-of-rooms {
+    float: left;
+    height: 100vh;
+    width: 20vw;
+    background-color: lightgrey;
+}
