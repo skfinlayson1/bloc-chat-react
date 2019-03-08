@@ -11,9 +11,7 @@ class User extends React.Component {
 
     componentDidMount() {
         this.props.firebase.auth().onAuthStateChanged( user => {
-            if (this.state.signedIn) {
-                this.props.signIn(user);
-            }
+            this.props.signIn(user || '');
         });
     }
 
@@ -24,7 +22,6 @@ class User extends React.Component {
         }
         if (this.state.signedIn) {
             this.props.firebase.auth().signOut();
-            this.props.signIn('')
         }
         this.setState( prevState => {
             return { signedIn: !prevState.signedIn }
@@ -34,7 +31,10 @@ class User extends React.Component {
     render() {
         return (
             <div className='user-status'>
-                {this.state.signedIn && !this.props.user.isAnonymous ? <h3>Welcome {this.props.user.displayName}</h3> : <h3>Please Sign In</h3>}  
+            
+                {this.state.signedIn && !this.props.user.isAnonymous ? <h3>Welcome {this.props.user.displayName}</h3> :
+                 this.props.user.isAnonymous ? <h3>Guest</h3> : <h3>Please Sign In</h3>}
+
                 <button onClick={this.handleSignIn}>{this.state.signedIn ? 'Sign Out' : 'Sign In'}</button>
             </div>
 
