@@ -4,7 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 
-import RoomList from './components/RoomList/';
+import RoomList from './components/RoomsList/';
 import MessageList from './components/MessageList/';
 import User from './components/User/';
 
