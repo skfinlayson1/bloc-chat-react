@@ -4,6 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 import RoomList from './components/roomList/'
+import MessageList from './components/MessageList/'
 
 // Initialize Firebase
 var config = {
@@ -17,6 +18,23 @@ var config = {
 firebase.initializeApp(config);
 
 class App extends Component {
+
+	constructor() {
+		super();
+		this.state = {
+			activeRoom: false
+		}
+	}
+
+	setActiveRoom = (room) => {
+
+		this.setState( prevState => {
+			return {
+				activeRoom: prevState.activeRoom = room,
+			}
+		})
+	}
+
   render() {
     return (
       <div>
@@ -26,8 +44,16 @@ class App extends Component {
         <section className='list-of-rooms'>
         	<RoomList
 				firebase={firebase}
+				setActiveRoom={this.setActiveRoom}
 			 />
         </section>
+		<section className='list-of-messages'>
+			<MessageList
+				firebase={firebase}
+				activeRoom={this.state.activeRoom}
+				messageContent={this.state.messageContent}
+			 />
+		</section>
       </div>
     );
   }

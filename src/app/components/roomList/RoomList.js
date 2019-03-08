@@ -14,7 +14,8 @@ class RoomList extends React.Component {
 
     componentDidMount() {
         this.roomsRef.on('child_added', snapshot => {
-            const room = {value: snapshot.val(), key: snapshot.key};
+            const room = snapshot.val();
+            room.key = snapshot.key;
             this.setState({ rooms: this.state.rooms.concat( room ) })
         })
     }
@@ -32,7 +33,7 @@ class RoomList extends React.Component {
             return {
                 textValue: prevState.textValue = ''
             }
-        })
+       })
     }
 
     render() {
@@ -40,7 +41,7 @@ class RoomList extends React.Component {
             <section className='all-rooms'>
                 {this.state.rooms.map(room => {
                     return (
-                        <div className='room' key={room.key}>{room.value.name}</div>
+                        <div className='room' key={room.key} onClick={() => this.props.setActiveRoom(room)}>{room.name}</div>
                     )
                 })}
 
@@ -57,6 +58,7 @@ class RoomList extends React.Component {
                         value='Add Chat Room'
                      />
                 </form>
+                <input type='button' onClick={() => console.log(this.state.rooms)} />
             </section>
         )
     }
