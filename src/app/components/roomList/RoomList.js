@@ -58,7 +58,6 @@ class RoomList extends React.Component {
                         value='Add Chat Room'
                      />
                 </form>
-                <input type='button' onClick={() => console.log(this.state.rooms)} />
             </section>
         )
     }

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase/app';
 import 'firebase/database';
+import 'firebase/auth';
 
-import RoomList from './components/roomList/'
-import MessageList from './components/MessageList/'
+import RoomList from './components/RoomList/';
+import MessageList from './components/MessageList/';
+import User from './components/User/';
 
 // Initialize Firebase
 var config = {
@@ -22,16 +24,20 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			activeRoom: false
+			activeRoom: false,
+			user: ''
 		}
 	}
 
 	setActiveRoom = (room) => {
-
 		this.setState( prevState => {
-			return {
-				activeRoom: prevState.activeRoom = room,
-			}
+			return { activeRoom: prevState.activeRoom = room }
+		})
+	}
+
+	signIn = (name) => {
+		this.setState( prevState => {
+			return {user: prevState.user = name}
 		})
 	}
 
@@ -40,6 +46,11 @@ class App extends Component {
       <div>
         <header>
           <h1 className='welcome-text'>Block Chat</h1>
+		  <User
+		  	firebase={firebase}
+			signIn={this.signIn}
+			user={this.state.user}
+			 />
         </header>
         <section className='list-of-rooms'>
         	<RoomList
