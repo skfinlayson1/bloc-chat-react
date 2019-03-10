@@ -1,10 +1,13 @@
 import React from 'react';
 
+import SubmitMessage from './SubmitMessage/';
+
 class MessageList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            messages: []
+            messages: [],
+            textValue: ''
         }
 
         this.messagesRef = this.props.firebase.database().ref('messages');
@@ -27,48 +30,66 @@ class MessageList extends React.Component {
             )
         }
 
-        const currentRoomMessages = this.state.messages.filter( message => {
-            return this.props.activeRoom.key === message.key;
-        })
-
 // If no messages exist show this default screen
+
+        const currentRoomMessages = this.state.messages.filter( message => {
+            return this.props.activeRoom.key === message.messages.roomId;
+        })
 
         if (currentRoomMessages.length === 0) {
             return (
-                <h1>Be the first to write a message</h1>
+                <div>
+                    <h1>Be the first to write a message</h1>
+				    <SubmitMessage 
+					    firebase={this.props.firebase} 
+					    activeRoom={this.props.activeRoom} 
+					    user={this.props.user}
+                        handleSubmit={this.handleSubmit}
+                        handleTextChange={this.handleTextChange}
+                        textValue={this.state.textValue}
+				     />
+			    </div>
             )
         }
 
-        const completeMessage = [];
-        const location = currentRoomMessages[0].messages;
+// render messages if needed values exist
 
-        for (let key in location) {
+        const completeMessage = [];
+
+        for (let i = 0; i < currentRoomMessages.length; i ++) {
             completeMessage.push(
                 {
-                content: location[key].content,
-                username: location[key].username,
-                time: location[key].sentAt,
-                roomId: location[key].roomId
+                content: currentRoomMessages[i].messages.content,
+                username: currentRoomMessages[i].messages.username,
+                sentAt: currentRoomMessages[i].messages.sentAt,
+                roomId: currentRoomMessages[i].messages.roomId
                 }
             );
         }
-
-// render messages if needed values exist
 
         return (
             <section>
                 {completeMessage.map( (message, index) => {
                     return (
-                        <div className='message' key={index}>
-                            <h4 className='username'>{message.username}</h4>
-                            <p className='content'>{message.content}</p>
-                            <span className='time'>{message.time}</span>
-                        </div>
+                            <div className='message' key={index}>
+                                <h4 className='username'>{message.username}</h4>
+                                <p className='content'>{message.content}</p>
+                                <span className='time'>{message.sentAt}</span>
+                            </div>
                     )
                 })}
+                <SubmitMessage 
+                    firebase={this.props.firebase} 
+                    activeRoom={this.props.activeRoom} 
+                    user={this.props.user}
+                    handleSubmit={this.handleSubmit}
+                    handleTextChange={this.handleTextChange}
+                    textValue={this.state.textValue}
+                 />
             </section>
         )
     }
 }
+
 
 export default MessageList;

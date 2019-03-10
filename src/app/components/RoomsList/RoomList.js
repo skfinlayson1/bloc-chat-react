@@ -23,16 +23,15 @@ class RoomList extends React.Component {
     textChange = (e) => {
         const newText = e.target.value;
         this.setState( prevState => {
-            return { textValue: prevState.textValue = newText }})
+            return { textValue: prevState.textValue = newText }
+        })
     }
 
     handleSubmit(e) {
         e.preventDefault();
         this.roomsRef.push({name: this.state.textValue});
         this.setState( prevState => {
-            return {
-                textValue: prevState.textValue = ''
-            }
+            return { textValue: prevState.textValue = '' }
        })
     }
 

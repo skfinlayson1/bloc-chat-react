@@ -46,25 +46,26 @@ class App extends Component {
       <div>
         <header>
           <h1 className='welcome-text'>Block Chat</h1>
-		  <User
-		  	firebase={firebase}
-			signIn={this.signIn}
-			user={this.state.user}
-			 />
+					<User
+						firebase={firebase}
+						activeRoom={this.state.activeRoom}
+						signIn={this.signIn}
+						user={this.state.user}
+					 />
         </header>
         <section className='list-of-rooms'>
         	<RoomList
-				firebase={firebase}
-				setActiveRoom={this.setActiveRoom}
-			 />
+						firebase={firebase}
+						setActiveRoom={this.setActiveRoom}
+					 />
         </section>
-		<section className='list-of-messages'>
-			<MessageList
-				firebase={firebase}
-				activeRoom={this.state.activeRoom}
-				messageContent={this.state.messageContent}
-			 />
-		</section>
+				<section className='list-of-messages'>
+					<MessageList
+						firebase={firebase}
+						activeRoom={this.state.activeRoom}
+						user={this.state.user}
+					 />
+				</section>
       </div>
     );
   }
