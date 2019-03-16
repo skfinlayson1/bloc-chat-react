@@ -1,47 +1,38 @@
 import React from 'react';
 
-class SubmitMessage extends React.Component {
+const SubmitMessage = (props) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            textValue: ''
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!props.messageChange) {
+            const message = {
+                content: props.textValue,
+                roomId: props.activeRoom.key,
+                sentAt: props.firebase.database.ServerValue.TIMESTAMP,
+                username: props.user.displayName
+            };
+            props.firebase.database().ref('messages').push(message);
+            props.setTextValue('');
+
+        } else {
+            const path = props.firebase.database().ref('messages/' + props.messageToChange.key + '/content');
+            path.set(props.textValue);
+            props.setTextValue('');
         }
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        const content = this.state.textValue;
-        const roomId = this.props.activeRoom.key;
-        const sentAt = this.props.firebase.database.ServerValue.TIMESTAMP
-        const username = this.props.user.displayName;
-        const message = {content: content, roomId: roomId, sentAt: sentAt, username: username};
-        const location = this.props.firebase.database().ref('messages');
-        location.push(message);
-        this.setState({textValue: ''});
-    }
-
-    handleTextChange = (e) => {
-        const value = e.target.value;
-        this.setState( prevState => {
-            return { textValue: prevState.textValue = value }
-        })
-    }
-
-
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <input 
-                    type='text' 
-                    onChange={this.handleTextChange} 
-                    value={this.state.textValue} 
-                    placeholder='Type Your Message Here'
-                    />
-                <input type='submit' value='Send' />
-            </form>
-        )
-    }
+    return (
+        <form onSubmit={handleSubmit}>
+            <input 
+                type='text' 
+                onChange={props.handleTextChange} 
+                value={props.textValue} 
+                placeholder='Type Your Message Here'
+                />
+            <input type='submit' value='Send' />
+        </form>
+    )
 
 }
 

@@ -16,3 +16,13 @@
     display: block;
     text-align: right;
 }
+
+.change-sentance {
+    color: blue;
+    margin: 0px 50px;
+}
+
+.remove-sentance {
+    color: red;
+    margin: 0px 50px;
+}

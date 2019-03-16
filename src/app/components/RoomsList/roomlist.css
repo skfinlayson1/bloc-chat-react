@@ -4,8 +4,19 @@
 
 .room {
     padding-top: 10px;
+    border: 1px solid black;
 }
 
 .add-chat-room {
     margin-top: 50px;
+}
+
+.rename-room {
+    color: blue;
+    margin: 0px 10px;
+}
+
+.remove-room {
+    color: red;
+    margin: 0px 10px;
 }
